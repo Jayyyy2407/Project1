@@ -1,0 +1,58 @@
+import random
+import string
+
+# Predefined lists of adjectives and nouns
+adjectives = ["Cool", "Happy", "Brave", "Witty", "Clever", "Fierce", "Mighty", "Silly", "Swift", "Jolly"]
+nouns = ["Tiger", "Dragon", "Eagle", "Shark", "Panther", "Wolf", "Falcon", "Bear", "Lion", "Fox"]
+
+def generate_username(include_numbers=True, include_special_chars=True, length=8):
+    """Generates a random username based on user preferences."""
+    adjective = random.choice(adjectives)
+    noun = random.choice(nouns)
+    username = adjective + noun
+
+    if include_numbers:
+        username += str(random.randint(10, 99))  # Adding a random number
+    
+    if include_special_chars:
+        special_chars = "!@#$%^&*"
+        username += random.choice(special_chars)  # Adding a random special character
+
+    return username[:length]  # Trim to desired length if needed
+
+def save_to_file(username, filename="usernames.txt"):
+    """Saves the generated username to a file."""
+    try:
+        with open(filename, "a") as file:
+            file.write(username + "\n")
+        print(f"Username '{username}' saved successfully!")
+    except Exception as e:
+        print(f"Error saving username: {e}")
+
+def main():
+    print("Welcome to the Random Username Generator!")
+
+    try:
+        include_numbers = input("Include numbers? (yes/no): ").strip().lower() == "yes"
+        include_special_chars = input("Include special characters? (yes/no): ").strip().lower() == "yes"
+        
+        while True:
+            try:
+                length = int(input("Enter desired username length (min 5, max 15): "))
+                if 5 <= length <= 15:
+                    break
+                else:
+                    print("Length must be between 5 and 15.")
+            except ValueError:
+                print("Please enter a valid number.")
+
+        username = generate_username(include_numbers, include_special_chars, length)
+        print(f"Generated Username: {username}")
+
+        save_to_file(username)
+    
+    except KeyboardInterrupt:
+        print("\nProcess interrupted by user.")
+
+if __name__ == "__main__":
+    main()
